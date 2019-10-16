@@ -42,7 +42,7 @@ class InciBeauty
     end
 
     def store_to_csv(array)
-        CSV.open("incibeauty.csv", "a+") do |csv|
+        CSV.open("incibeauty.csv", "a+",{:col_sep => ";"}) do |csv|
             csv << array
         end
     end
@@ -51,14 +51,17 @@ class InciBeauty
         list_urls = list_urls()
         detail_pages = []
         list_urls.each do |list_url|
-            detail_pages << scrap_list(list_url)
+            pages = scrap_list(list_url)
+            puts pages
+            detail_pages << pages
             sleep(2)
         end
         detail_pages.flatten!
         detail_pages.each do |url_page|
             page_result = scrap_detail_page(url_page)
+            puts page_result
             store_to_csv(page_result) if !page_result.nil?
-            sleep(2)
+            sleep(1)
         end
     end
 end
